@@ -11,7 +11,8 @@ const taskSchema = new mongoose.Schema({
      
     userId : {
         type : mongoose.Schema.Types.ObjectId, 
-        ref : 'User'
+        ref : 'User',
+        require : true
      },
     
     categoryId : {
@@ -21,5 +22,5 @@ const taskSchema = new mongoose.Schema({
 
 },{timestamps : true});
 
-const title = mongoose.model('title', taskSchema);
+// const title = mongoose.model('title', taskSchema);
 module.exports = mongoose.model("Task", taskSchema);

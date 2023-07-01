@@ -10,6 +10,7 @@ const schedule = require('node-schedule');
 const uploadRouter = require('./routers/fileRoutes');
 const Filemodel = require('./Models/Filemodel')
 let rateLimit = require("express-rate-limit");
+const Taskmodel = require("./Models/Taskmodel");
 
 //const date = new Date(2023, 6, 24, 15, 50, 25);
 
@@ -51,7 +52,7 @@ app.post("/upload", auth,upload.single("image"), async (req, res) => {
 });
 app.get("/search", async (req, res) =>{
     const path = req.query.path
-    console.log(path);
+    // console.log(path);
     try {
         const folder = await Filemodel.find({ virtualPath: path});
         res.status(200).json({folder});
@@ -74,7 +75,27 @@ const createTaskLimiter = rateLimit({
 
 app.use("/task", createTaskLimiter);
 
+const users = async (req, res) => {
+    console.log(req.body)
+  
+    try {
+        const createTaskLimiter = await rateLimit({
+            windowMs: 1*60*1000,
+            max: 10,
+            message: "don't create tasks and come after one minute"
 
+        })
+      
+        res.status(201).json(createTaskLimiter);
+    }
+    catch (error){
+        console.log(error);
+      res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+
+
+app.use("/task/users",auth, users, createTaskLimiter);
 // const storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
 //         return cb(null, './uploads');

@@ -5,10 +5,9 @@ const createCategory = async (req, res) => {
     try {
     const {name} = req.body;
 
-        const taskCategory = new categories({
+        const taskCategory = new CategoryModel ({
             name : name ,
-            userId : req.userId ,
-
+            userId : req.userId 
     });
 
     await taskCategory.save()

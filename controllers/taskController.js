@@ -29,7 +29,7 @@ const getTask = async (req, res) => {
   }
 }
 const createTask = async (req, res) => {
-  console.log(req.user)
+  // console.log(req.userId)
   const { title, desc, status, duration, start } = req.body;
   try {
     const CreateNewTask = await Taskmodel.create({
@@ -39,9 +39,9 @@ const createTask = async (req, res) => {
       start: new Date(start),
       userId: req.userId,
       categoryId: req.body.categoryId
+      
     });
-    
-
+    console.log(req.userId)
     res.status(201).json(CreateNewTask);
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -104,3 +104,37 @@ const deleteTask = async (req, res) => {
 
 module.exports = { createTask, updateTask, deleteTask, getTask, getTaskStatus };
 
+//const createTask = async (req, res) => {
+  // const currentTime = new Date().getTime();
+  // const lastCallTime = req.session.lastCallTime || 0;
+  // const callCount = req.session.callCount || 0;
+
+  // if (currentTime - lastCallTime <= 60000 && callCount >= 10) {
+  //   res.status(200).send("Don't create tasks, please come back after 1 minute");
+  // } else {
+  //   req.session.lastCallTime = currentTime;
+  //   req.session.callCount = callCount + 1;
+
+  //   console.log(req.user);
+  //   const { title, desc, status, duration, start, categoryId } = req.body;
+  //   try {
+  //     const CreateNewTask = await Taskmodel.create({
+  //       title: title,
+  //       desc: desc,
+  //       status: status,
+  //       start: new Date(start),
+  //       userId: req.user.id, // Assuming user ID is available in req.user.id
+  //       categoryId: categoryId
+  //     });
+  //     res.status(201).json(CreateNewTask);
+  //   } catch (error) {
+  //     if (error.name === 'ValidationError') {
+  //       const errors = Object.values(error.errors).map((err) => err.message);
+  //       res.status(400).json({ errors });
+  //     } else {
+  //       console.log(error);
+  //       res.status(500).json({ message: 'Something went wrong' });
+  //     }
+  //   }
+  // }
+//};

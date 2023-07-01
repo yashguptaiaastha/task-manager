@@ -5,7 +5,12 @@ const categorySchema = new mongoose.Schema({
     name : {
         type : String , 
         required: true
-    }
+    },
+    userId : {
+        type : mongoose.Schema.Types.ObjectId, 
+        ref : 'User',
+        require : true
+     }
             
 },{timestamps : true});
 
